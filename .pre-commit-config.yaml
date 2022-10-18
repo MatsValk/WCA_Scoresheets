@@ -26,3 +26,4 @@ repos:
     hooks:
     -   id: yapf
         name: YAPF formatting
+exclude: ^data/
