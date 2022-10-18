@@ -1,0 +1,41 @@
+WCA Scoresheets predictor
+
+First model:
+	- Predict Event
+		- 3x3, 2x2, 4x4, Pyraminx, OH
+	- Predict Round
+		- Round 1, Round 2, Round 3
+	- Predict ID box
+	- Predict +2s
+	- Predict Misc
+
+Second to sixth model:
+	- Predict minutes, 10th seconds, seconds, 100ms, 10ms
+	- Result boxes with classification
+	- 0-9, DNF, DNS, Extra, Empty
+
+Seventh model:
+	- PyTesserAct, PaddleOCR or TfOCR to read people and competiton names.
+
+Postprocessing:
+	- Merge predicted result boxes into WCA result
+
+ Annotations:
+ 	- Event, Round, Id, Misc, +2, Result boxes as annotations
+ 	- Contents of results boxes from WCA website
+ 	- Python script to prepare everything
+
+Todo/Ideas:
+	- Increase IoU threshold during evaluation
+	- Structure folders for CI/CD
+		- Make class of file: filename, comp, traintest, results, functions to get digits, to evaluate result
+	- During eval, assign weights to each class based on number of present objects. (maps in train.py)
+
+
+Models necessary:
+	- One to predict boxes just for labelling
+		- Round, Event, Id, Result, +2, Misc, Missing signature
+	- One to predict classes from scoresheet:
+		- Round, Event, Id, +2, Misc, Missing signatures
+	- Five to predict Result
+	-
