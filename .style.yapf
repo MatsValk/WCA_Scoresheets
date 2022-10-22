@@ -1,4 +1,4 @@
 [style]
 based_on_style = pep8
 column_limit = 90
-spaces_around_default_or_named_assing = true
+spaces_around_default_or_named_assign = true
