@@ -25,8 +25,8 @@ class ScoreDeck:
     def __post_init__(self):
         self.results_df = self.read_competition_results_df()
         self.train_test_values = self.read_train_test_values()
-        self.update_train_test_values()
         self.scorecards = self.read_scorecards()
+        self.update_train_test_values()
 
     @property
     def train_test_values_path(self) -> Path:
@@ -47,21 +47,22 @@ class ScoreDeck:
         else:
             return load_yaml(self.train_test_values_path)
 
+    def read_scorecards(self) -> List[ScoreCard]:
+        """ Return list of ScoreCards based on self.results_df """
+        return [
+            ScoreCard(result) for result in self.results_df.to_dict(orient = 'records')
+        ]
+
     def update_train_test_values(self) -> None:
         """ Update missing filenames """
         missing_train_test_filenames = [
-            filename for filename in self.results_df['Filename']
-            if filename not in self.train_test_values
+            scorecard.filename for scorecard in self.scorecards
+            if scorecard.filename not in self.train_test_values
         ]
+
         if len(missing_train_test_filenames) > 0:
             for filename in missing_train_test_filenames:
                 seed = int.from_bytes(filename.encode('utf-8'), byteorder = 'big') % 10**9
                 np.random.seed(seed)
                 self.train_test_values[filename] = np.random.uniform(0, 1)
             save_as_yaml(self.train_test_values_path, self.train_test_values)
-
-    def read_scorecards(self) -> List[ScoreCard]:
-        """ Return list of ScoreCards based on self.results_df """
-        return [
-            ScoreCard(result) for result in self.results_df.to_dict(orient = 'records')
-        ]
