@@ -10,9 +10,9 @@ class Result:
     time: str
     penalty: int
 
-    minutes: int = None
-    seconds: int = None
-    milliseconds: int = None
+    minutes: int = field(init = False)
+    seconds: int = field(init = False)
+    milliseconds: int = field(init = False)
 
     result_type: ResultTypes = field(init = False)
 
@@ -39,8 +39,11 @@ class Result:
 
         self.milliseconds = int(time_split[-1])
         self.seconds = int(time_split[-2]) - self.penalty
+
         if len(time_split) == 3:
             self.minutes = int(time_split[-3])
+        else:
+            self.minutes = 0
 
         if self.seconds < 0:
             self.seconds %= 60
