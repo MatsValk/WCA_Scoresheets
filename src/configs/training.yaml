@@ -1,0 +1,5 @@
+train_frac: 0.5
+test_frac: 0.25
+validate_frac: 0.25
+
+categories_data_train_path: data/model_training/categories
